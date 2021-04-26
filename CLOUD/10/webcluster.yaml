@@ -1,0 +1,420 @@
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv-nfs
+spec:
+  volumeMode: Filesystem
+  capacity:
+    storage: 30Gi
+  accessModes:
+  - ReadWriteOnce
+  - ReadOnlyMany
+  - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 192.168.1.100
+    path: /var/webroot
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-nfs
+spec:
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 25Gi
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: php-conf
+data:
+  www.conf: "; Start a new pool named 'www'.\n[www]\n\n; The address on which to accept
+    FastCGI requests.\n; Valid syntaxes are:\n;   'ip.add.re.ss:port'    - to listen
+    on a TCP socket to a specific address on\n;                            a specific
+    port;\n;   'port'                 - to listen on a TCP socket to all addresses
+    on a\n;                            specific port;\n;   '/path/to/unix/socket'
+    - to listen on a unix socket.\n; Note: This value is mandatory.\nlisten = 0.0.0.0:9000\n\n;
+    Set listen(2) backlog. A value of '-1' means unlimited.\n; Default Value: -1\n;listen.backlog
+    = -1\n \n; List of ipv4 addresses of FastCGI clients which are allowed to connect.\n;
+    Equivalent to the FCGI_WEB_SERVER_ADDRS environment variable in the original\n;
+    PHP FCGI (5.2.2+). Makes sense only with a tcp listening socket. Each address\n;
+    must be separated by a comma. If this value is left blank, connections will be\n;
+    accepted from any ip address.\n; Default Value: any\n; listen.allowed_clients
+    = 127.0.0.1\n\n; Set permissions for unix socket, if one is used. In Linux, read/write\n;
+    permissions must be set in order to allow connections from a web server. Many\n;
+    BSD-derived systems allow connections regardless of permissions. \n; Default Values:
+    user and group are set as the running user\n;                 mode is set to 0666\n;listen.owner
+    = nobody\n;listen.group = nobody\n;listen.mode = 0666\n\n; Unix user/group of
+    processes\n; Note: The user is mandatory. If the group is not set, the default
+    user's group\n;       will be used.\n; RPM: apache Choosed to be able to access
+    some dir as httpd\nuser = apache\n; RPM: Keep a group allowed to write in log
+    dir.\ngroup = apache\n\n; Choose how the process manager will control the number
+    of child processes.\n; Possible Values:\n;   static  - a fixed number (pm.max_children)
+    of child processes;\n;   dynamic - the number of child processes are set dynamically
+    based on the\n;             following directives:\n;             pm.max_children
+    \     - the maximum number of children that can\n;                                    be
+    alive at the same time.\n;             pm.start_servers     - the number of children
+    created on startup.\n;             pm.min_spare_servers - the minimum number of
+    children in 'idle'\n;                                    state (waiting to process).
+    If the number\n;                                    of 'idle' processes is less
+    than this\n;                                    number then some children will
+    be created.\n;             pm.max_spare_servers - the maximum number of children
+    in 'idle'\n;                                    state (waiting to process). If
+    the number\n;                                    of 'idle' processes is greater
+    than this\n;                                    number then some children will
+    be killed.\n; Note: This value is mandatory.\npm = dynamic\n\n; The number of
+    child processes to be created when pm is set to 'static' and the\n; maximum number
+    of child processes to be created when pm is set to 'dynamic'.\n; This value sets
+    the limit on the number of simultaneous requests that will be\n; served. Equivalent
+    to the ApacheMaxClients directive with mpm_prefork.\n; Equivalent to the PHP_FCGI_CHILDREN
+    environment variable in the original PHP\n; CGI.\n; Note: Used when pm is set
+    to either 'static' or 'dynamic'\n; Note: This value is mandatory.\npm.max_children
+    = 50\n\n; The number of child processes created on startup.\n; Note: Used only
+    when pm is set to 'dynamic'\n; Default Value: min_spare_servers + (max_spare_servers
+    - min_spare_servers) / 2\npm.start_servers = 5\n\n; The desired minimum number
+    of idle server processes.\n; Note: Used only when pm is set to 'dynamic'\n; Note:
+    Mandatory when pm is set to 'dynamic'\npm.min_spare_servers = 5\n\n; The desired
+    maximum number of idle server processes.\n; Note: Used only when pm is set to
+    'dynamic'\n; Note: Mandatory when pm is set to 'dynamic'\npm.max_spare_servers
+    = 35\n \n; The number of requests each child process should execute before respawning.\n;
+    This can be useful to work around memory leaks in 3rd party libraries. For\n;
+    endless request processing specify '0'. Equivalent to PHP_FCGI_MAX_REQUESTS.\n;
+    Default Value: 0\n;pm.max_requests = 500\n\n; The URI to view the FPM status page.
+    If this value is not set, no URI will be\n; recognized as a status page. By default,
+    the status page shows the following\n; information:\n;   accepted conn    - the
+    number of request accepted by the pool;\n;   pool             - the name of the
+    pool;\n;   process manager  - static or dynamic;\n;   idle processes   - the number
+    of idle processes;\n;   active processes - the number of active processes;\n;
+    \  total processes  - the number of idle + active processes.\n; The values of
+    'idle processes', 'active processes' and 'total processes' are\n; updated each
+    second. The value of 'accepted conn' is updated in real time.\n; Example output:\n;
+    \  accepted conn:   12073\n;   pool:             www\n;   process manager:  static\n;
+    \  idle processes:   35\n;   active processes: 65\n;   total processes:  100\n;
+    By default the status page output is formatted as text/plain. Passing either\n;
+    'html' or 'json' as a query string will return the corresponding output\n; syntax.
+    Example:\n;   http://www.foo.bar/status\n;   http://www.foo.bar/status?json\n;
+    \  http://www.foo.bar/status?html\n; Note: The value must start with a leading
+    slash (/). The value can be\n;       anything, but it may not be a good idea to
+    use the .php extension or it\n;       may conflict with a real PHP file.\n; Default
+    Value: not set \n;pm.status_path = /status\n \n; The ping URI to call the monitoring
+    page of FPM. If this value is not set, no\n; URI will be recognized as a ping
+    page. This could be used to test from outside\n; that FPM is alive and responding,
+    or to\n; - create a graph of FPM availability (rrd or such);\n; - remove a server
+    from a group if it is not responding (load balancing);\n; - trigger alerts for
+    the operating team (24/7).\n; Note: The value must start with a leading slash
+    (/). The value can be\n;       anything, but it may not be a good idea to use
+    the .php extension or it\n;       may conflict with a real PHP file.\n; Default
+    Value: not set\n;ping.path = /ping\n\n; This directive may be used to customize
+    the response of a ping request. The\n; response is formatted as text/plain with
+    a 200 response code.\n; Default Value: pong\n;ping.response = pong\n \n; The timeout
+    for serving a single request after which the worker process will\n; be killed.
+    This option should be used when the 'max_execution_time' ini option\n; does not
+    stop script execution for some reason. A value of '0' means 'off'.\n; Available
+    units: s(econds)(default), m(inutes), h(ours), or d(ays)\n; Default Value: 0\n;request_terminate_timeout
+    = 0\n \n; The timeout for serving a single request after which a PHP backtrace
+    will be\n; dumped to the 'slowlog' file. A value of '0s' means 'off'.\n; Available
+    units: s(econds)(default), m(inutes), h(ours), or d(ays)\n; Default Value: 0\n;request_slowlog_timeout
+    = 0\n \n; The log file for slow requests\n; Default Value: not set\n; Note: slowlog
+    is mandatory if request_slowlog_timeout is set\nslowlog = /var/log/php-fpm/www-slow.log\n
+    \n; Set open file descriptor rlimit.\n; Default Value: system defined value\n;rlimit_files
+    = 1024\n \n; Set max core size rlimit.\n; Possible Values: 'unlimited' or an integer
+    greater or equal to 0\n; Default Value: system defined value\n;rlimit_core = 0\n
+    \n; Chroot to this directory at the start. This value must be defined as an\n;
+    absolute path. When this value is not set, chroot is not used.\n; Note: chrooting
+    is a great security feature and should be used whenever \n;       possible. However,
+    all PHP paths will be relative to the chroot\n;       (error_log, sessions.save_path,
+    ...).\n; Default Value: not set\n;chroot = \n \n; Chdir to this directory at the
+    start. This value must be an absolute path.\n; Default Value: current directory
+    or / when chroot\n;chdir = /var/www\n \n; Redirect worker stdout and stderr into
+    main error log. If not set, stdout and\n; stderr will be redirected to /dev/null
+    according to FastCGI specs.\n; Default Value: no\n;catch_workers_output = yes\n
+    \n; Limits the extensions of the main script FPM will allow to parse. This can\n;
+    prevent configuration mistakes on the web server side. You should only limit\n;
+    FPM to .php extensions to prevent malicious users to use other extensions to\n;
+    exectute php code.\n; Note: set an empty value to allow all extensions.\n; Default
+    Value: .php\n;security.limit_extensions = .php .php3 .php4 .php5\n\n; Pass environment
+    variables like LD_LIBRARY_PATH. All $VARIABLEs are taken from\n; the current environment.\n;
+    Default Value: clean env\n;env[HOSTNAME] = $HOSTNAME\n;env[PATH] = /usr/local/bin:/usr/bin:/bin\n;env[TMP]
+    = /tmp\n;env[TMPDIR] = /tmp\n;env[TEMP] = /tmp\n\n; Additional php.ini defines,
+    specific to this pool of workers. These settings\n; overwrite the values previously
+    defined in the php.ini. The directives are the\n; same as the PHP SAPI:\n;   php_value/php_flag
+    \            - you can set classic ini defines which can\n;                                    be
+    overwritten from PHP call 'ini_set'. \n;   php_admin_value/php_admin_flag - these
+    directives won't be overwritten by\n;                                     PHP
+    call 'ini_set'\n; For php_*flag, valid values are on, off, 1, 0, true, false,
+    yes or no.\n\n; Defining 'extension' will load the corresponding shared extension
+    from\n; extension_dir. Defining 'disable_functions' or 'disable_classes' will
+    not\n; overwrite previously defined php.ini values, but will append the new value\n;
+    instead.\n\n; Default Value: nothing is defined by default except the values in
+    php.ini and\n;                specified at startup with the -d argument\n;php_admin_value[sendmail_path]
+    = /usr/sbin/sendmail -t -i -f www@my.domain.com\n;php_flag[display_errors] = off\nphp_admin_value[error_log]
+    = /var/log/php-fpm/www-error.log\nphp_admin_flag[log_errors] = on\n;php_admin_value[memory_limit]
+    = 128M\n\n; Set session path to a directory owned by process user\nphp_value[session.save_handler]
+    = files\nphp_value[session.save_path] = /var/lib/php/session\n\n"
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: php-deploy
+spec:
+  selector:
+    matchLabels:
+      app: myphp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: myphp
+    spec:
+      volumes:
+      - name: php-conf
+        configMap:
+          name: php-conf
+      - name: website
+        persistentVolumeClaim:
+          claimName: pvc-nfs
+      containers:
+      - name: php-fpm
+        image: 192.168.1.100:5000/myos:php-fpm
+        volumeMounts:
+        - name: php-conf
+          subPath: www.conf
+          mountPath: /etc/php-fpm.d/www.conf
+        - name: website
+          mountPath: /usr/local/nginx/html
+        ports:
+        - protocol: TCP
+          containerPort: 9000
+        resources:
+          requests:
+            cpu: 200m
+      restartPolicy: Always
+
+---
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v1
+metadata:
+  name: myphp
+spec:
+  minReplicas: 1
+  maxReplicas: 5
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: php-deploy
+  targetCPUUtilizationPercentage: 50
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpbackend
+spec:
+  ports:
+  - protocol: TCP
+    port: 9000
+    targetPort: 9000
+  selector:
+    app: myphp
+  type: ClusterIP
+
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-conf
+data:
+  nginx.conf: |2
+
+    #user  nobody;
+    worker_processes  1;
+
+    #error_log  logs/error.log;
+    #error_log  logs/error.log  notice;
+    #error_log  logs/error.log  info;
+
+    #pid        logs/nginx.pid;
+
+
+    events {
+        worker_connections  1024;
+    }
+
+
+    http {
+        include       mime.types;
+        default_type  application/octet-stream;
+
+        #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+        #                  '$status $body_bytes_sent "$http_referer" '
+        #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+        #access_log  logs/access.log  main;
+
+        sendfile        on;
+        #tcp_nopush     on;
+
+        #keepalive_timeout  0;
+        keepalive_timeout  65;
+
+        #gzip  on;
+
+        server {
+            listen       80;
+            server_name  localhost;
+
+            #charset koi8-r;
+
+            #access_log  logs/host.access.log  main;
+
+            location / {
+                root   html;
+                index  index.html index.htm;
+            }
+
+            #error_page  404              /404.html;
+
+            # redirect server error pages to the static page /50x.html
+            #
+            error_page   500 502 503 504  /50x.html;
+            location = /50x.html {
+                root   html;
+            }
+
+            # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+            #
+            #location ~ \.php$ {
+            #    proxy_pass   http://127.0.0.1;
+            #}
+
+            # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+            #
+            location ~ \.php$ {
+                root           html;
+                fastcgi_pass   phpbackend:9000;
+                fastcgi_index  index.php;
+                include        fastcgi.conf;
+            }
+
+            # deny access to .htaccess files, if Apache's document root
+            # concurs with nginx's one
+            #
+            #location ~ /\.ht {
+            #    deny  all;
+            #}
+        }
+
+
+        # another virtual host using mix of IP-, name-, and port-based configuration
+        #
+        #server {
+        #    listen       8000;
+        #    listen       somename:8080;
+        #    server_name  somename  alias  another.alias;
+
+        #    location / {
+        #        root   html;
+        #        index  index.html index.htm;
+        #    }
+        #}
+
+
+        # HTTPS server
+        #
+        #server {
+        #    listen       443 ssl;
+        #    server_name  localhost;
+
+        #    ssl_certificate      cert.pem;
+        #    ssl_certificate_key  cert.key;
+
+        #    ssl_session_cache    shared:SSL:1m;
+        #    ssl_session_timeout  5m;
+
+        #    ssl_ciphers  HIGH:!aNULL:!MD5;
+        #    ssl_prefer_server_ciphers  on;
+
+        #    location / {
+        #        root   html;
+        #        index  index.html index.htm;
+        #    }
+        #}
+
+    }
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: webcluster
+spec:
+  selector:
+    matchLabels:
+      app: mynginx
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: mynginx
+    spec:
+      volumes:
+      - name: nginx-php
+        configMap:
+          name: nginx-conf
+      - name: log-data
+        hostPath:
+          path: /var/log/weblog
+          type: DirectoryOrCreate
+      - name: website
+        persistentVolumeClaim:
+          claimName: pvc-nfs
+      containers:
+      - name: nginx
+        image: 192.168.1.100:5000/myos:nginx
+        volumeMounts:
+        - name: nginx-php
+          subPath: nginx.conf
+          mountPath: /usr/local/nginx/conf/nginx.conf
+        - name: log-data
+          mountPath: /usr/local/nginx/logs
+        - name: website
+          mountPath: /usr/local/nginx/html
+        ports:
+        - protocol: TCP
+          containerPort: 80
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webforeground
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  selector:
+    app: mynginx
+  type: ClusterIP
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: webcluster
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  backend:
+    serviceName: webforeground
+    servicePort: 80
+

@@ -1,37 +1,34 @@
 # Tedu_NSD
 
 #### 介绍
-云计算2021年新版课程
+云计算2021年课程笔记
 
-#### 软件架构
-软件架构说明
+#### 课程说明
+云平台部署与管理（10天）
+大型架构及配置技术（5天）
+
+讲师: 李欣
+20年一线工作经验，曾在魅力企业网，英才网联、建筑英才网、人民网旗下澳客网担任系统架构师、运维经理等职务，精通 Linux 下服务的配置，大规模集群管理，针对>网络架构、系统优化，性能调优有独到见解，擅长使用 shell、python 开发等。 
+
+授课风格
+思路清晰，考点把握精准，语言幽默风趣
+
+讲师QQ: 3273252716
+仓库地址 https://gitee.com/luckfurit/Tedu_NSD.git
 
 
-#### 安装教程
+#### 环境准备
+https://pan.baidu.com/s/1xsKK5bwVcGUnTuxbStjIGA 
+提取码:nprh
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+typora 编辑器下载地址
+https://typora.io
 
 #### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+Windows 学员，请提前从网盘下载软件及教学环境，参考第一天环境准备文档提前完成部署
+Linux 学员 -- 请使用教学环境
 
 #### 参与贡献
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
 
 #### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
