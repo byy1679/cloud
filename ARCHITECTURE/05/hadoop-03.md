@@ -6,16 +6,9 @@
 
 ```mermaid
 graph BT
-M1(leader) 
-N1(follower)
-N2(follower)
-N3(observer)
-N1 --> M1
-N2 --> M1
-N3 --> M1
-style M1 color:#ff0000,fill:#aaccff
-style N1 color:#ff0000,fill:#aaccff
-style N2 color:#ff0000,fill:#aaccff
+N1(follower) & N2(follower) & N3(observer) --> M1([leader]) 
+classDef BG color:#ff0000,fill:#aaccff
+class M1,N1,N2 BG
 ```
 
 
@@ -121,22 +114,17 @@ imok
 
 ```mermaid
 graph TB
-NN1(hadoop1<br><font color=ff0000>NameNode<br>ResourceManager<br>DFSZKFailoverController</font>)
-NN2(hadoop2<br><font color=ff0000>NameNode<br>ResourceManager<br>DFSZKFailoverController</font>)
+NN1([hadoop1<br><font color=ff0000>NameNode<br>ResourceManager<br>DFSZKFailoverController</font>])
+NN2([hadoop2<br><font color=ff0000>NameNode<br>ResourceManager<br>DFSZKFailoverController</font>])
 D1(node-0001<br><font color=ff0000>DataNode<br>NodeManager<br>JournalNode<br>QuorumPeerMain</font>)
 D2(node-0002<br><font color=ff0000>DataNode<br>NodeManager<br>JournalNode<br>QuorumPeerMain</font>)
 D3(node-0003<br><font color=ff0000>DataNode<br>NodeManager<br>JournalNode<br>QuorumPeerMain</font>)
+NN1 === D1 & D2 & D3
+NN2 --- D1 & D2 & D3
 style NN1 fill:#55ff55
 style NN2 fill:#aaaaaa
-style D1 fill:#10a0f0
-style D2 fill:#10a0f0
-style D3 fill:#10a0f0
-NN1 === D1
-NN1 === D2
-NN1 === D3
-NN2 -.- D1
-NN2 -.- D2
-NN2 -.- D3
+classDef BG fill:#10a0f0
+class D1,D2,D3 BG
 ```
 
 购买云主机

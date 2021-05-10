@@ -6,13 +6,11 @@
 
 ```mermaid
 graph TB
-M1(hadoop1<br><font color=0000ff>Namenode<br>SecondaryNamenode<br>ResourceManager</font>) 
+M1([hadoop1<br><font color=0000ff>Namenode<br>SecondaryNamenode<br>ResourceManager</font>]) 
 N1(node-0001<br><font color=0000ff>DataNode<br>NodeManager</font>)
 N2(node-0002<br><font color=0000ff>DataNode<br>NodeManager</font>)
 N3(node-0003<br><font color=0000ff>DataNode<br>NodeManager</font>)
-M1 --> N1
-M1 --> N2
-M1 --> N3
+M1 --> N1 & N2 & N3
 ```
 
 
@@ -121,26 +119,19 @@ Total Nodes:4
 ```mermaid
 graph LR
 subgraph HDFS集群
-  style HDFS集群 color:#ff0000,fill:#aaccff
-  N1(namenode)
-  D1(datanode)
-  D2(datanode)
-  D3(datanode)
-  N1 === D1
-  N1 === D2
-  N1 === D3
+  N1[(namenode)] === D1[(datanode)] & D2[(datanode)] & D3[(datanode)]
 end
 subgraph NFS网关
-  style NFS网关 color:#ff0000,fill:#22ff66
-  S1(HDFS客户端)
-  S2(NFS服务)
-  S2 --> S1
+  S2{NFS服务} o--o S1{HDFS客户端} --> N1
 end
-S1 --> N1
-S1 -.-> D1
-S1 -.-> D2
-S1 -.-> D3
-C((客户端)) -->|mount| S2
+S1 -.-> D1 & D2 & D3
+C((客户端)) o--o |mount| S2
+classDef HDFS color:#9f0000,fill:#aaccff
+class HDFS集群 HDFS
+classDef GW color:#9f0000,fill:#22ff66
+class NFS网关 GW
+classDef C fill:#f9f,stroke:#333,stroke-width:4px;
+class C C
 ```
 
 ###### 购买云主机 

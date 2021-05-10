@@ -3,44 +3,30 @@
 ## ELK架构图例
 
 ```mermaid
-graph LR
-subgraph web cluster
+flowchart LR
+subgraph Z1[web cluster]
   subgraph web1
-    H1[apache] --> F1(filebeat)
+    H1([apache]) --> F1([filebeat])
   end
   subgraph web2
-    H2[apache] --> F2(filebeat)
+    H2([apache]) --> F2([filebeat])
   end
   subgraph web3
-    H3[apache] --> F3(filebeat)
+    H3([apache]) --> F3([filebeat])
   end
-  style web1 color:#ff0000,fill:#99ff99
-  style web2 color:#ff0000,fill:#99ff99
-  style web3 color:#ff0000,fill:#99ff99
 end
-F1 --> A1
-F2 --> A1
-F3 --> A1
-subgraph Logstash
-  A1(input) --> A2(filter) --> A3(output)
+subgraph Z2[Logstash]
+  F1 & F2 & F3 --> A1{input} --> A2{filter} --> A3{output}
 end
-subgraph ES Cluster
-  ES1(Elasticsearch)  
-  ES2(Elasticsearch)
-  ES3(Elasticsearch)
-  ES4(Elasticsearch)
-  ES5(Elasticsearch)
+subgraph Z3[ES Cluster]
+  ES1([Elasticsearch]);ES2([Elasticsearch]);ES3([Elasticsearch]);ES4([Elasticsearch]);ES5([Elasticsearch])
 end
-A3 --> ES1
-A3 --> ES2
-A3 --> ES3
-A3 --> ES4
-A3 --> ES5
-ES1 --> K(kibana)
-ES2 --> K
-ES3 --> K
-ES4 --> K
-ES5 --> K
+A3 --> ES1 & ES2 & ES3 & ES4 & ES5
+ES1 & ES2 & ES3 & ES4 & ES5 --> K((kibana))
+classDef WEB color:#ff0000,fill:#99ff99
+class web1,web2,web3 WEB
+classDef ZONE fill:#ffffc0,color:#ff00ff
+class Z1,Z2,Z3 ZONE
 ```
 
 #### logstash安装

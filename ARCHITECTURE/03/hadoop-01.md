@@ -57,13 +57,11 @@
 
 ```mermaid
 graph TB
-M1(hadoop1<br><font color=ff0000>NameNode<br>SecondaryNamenode</font>) 
+M1([hadoop1<br><font color=ff0000>NameNode<br>SecondaryNamenode</font>]) 
 N1(node-0001<br><font color=ff0000>Datanode</font>)
 N2(node-0002<br><font color=ff0000>Datanode</font>)
 N3(node-0003<br><font color=ff0000>Datanode</font>)
-M1 --> N1
-M1 --> N2
-M1 --> N3
+M1 --> N1 & N2 & N3
 ```
 
 ###### HDFS部署
@@ -190,13 +188,11 @@ Live datanodes (3):
 
 ```mermaid
 graph TB
-M1(hadoop1<br><font color=0000ff>namenode<br>secondarynamenode</font><br><font color=ff0000>ResourceManager</font>) 
+M1([hadoop1<br><font color=0000ff>namenode<br>secondarynamenode</font><br><font color=ff0000>ResourceManager</font>]) 
 N1(node-0001<br><font color=0000ff>DataNode</font><br><font color=ff0000>NodeManager</font>)
 N2(node-0002<br><font color=0000ff>DataNode</font><br><font color=ff0000>NodeManager</font>)
 N3(node-0003<br><font color=0000ff>DataNode</font><br><font color=ff0000>NodeManager</font>)
-M1 --> N1
-M1 --> N2
-M1 --> N3
+M1 --> N1 & N2 & N3
 ```
 
 ###### Yarn部署
