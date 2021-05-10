@@ -6,15 +6,13 @@
 graph LR
   subgraph L1[公有云平台]
   style L1 fill:#ccccff
-    P(跳板机<br>公有云弹性IP)
-    style P fill:#00ff00
-    P --> A1(云主机)
-    P --> A2(云主机)
-    P --> A3(云主机)
+    P[(跳板机<br>公有云弹性IP)]
+    style P fill:#00ff00,color:#fffaa0
+    P ---> A1[(云主机)] & A2[(云主机)] & A3[(云主机)]
     M{{模板镜像}}
     style M fill:#11aaff
   end
-U((管理员)) --> P
+U((管理员)) -..-> P
 style U fill:#ff99ff
 ```
 
@@ -94,27 +92,21 @@ gpgcheck=0
 graph LR
   subgraph L1[公有云平台]
   style L1 fill:#ccffcc
-    P(跳板机<br>公有云弹性IP)
-    style P fill:#ffff00
     subgraph web集群
       style web集群 fill:#ccccff
-      A1(web-0001)
-      A2(web-0002)
-      A3(web-0003)
+      A1[(web-0001)];A2[(web-0002)];A3[(web-0003)]
     end
-    P -.-> A1
-    P -.-> A2
-    P -.-> A3
-    L((负载均衡<br>ELB))
+    P([跳板机<br>公有云弹性IP]) -.-> A1 & A2 & A3
+    style P fill:#ffff00
+    L((负载均衡<br>ELB)) --> A1 & A2 & A3
     style L fill:#ffaa44
-    L --> A1
-    L --> A2
-    L --> A3
   end
 U1((管理员)) -.->|管理| P
 U2((用户)) -->|访问| L
 style U1 fill:#ff99ff
 style U2 fill:#aa99ff
+classDef VM color:#ff0000,fill:#99ff99
+class A1,A2,A3 VM
 ```
 
 

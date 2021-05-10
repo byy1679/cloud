@@ -4,28 +4,25 @@
 ```mermaid
 graph TB
 subgraph 架构图例
-  style 架构图例 color:#ff0000
+  style 架构图例 fill:#ffffc0,color:#ff00ff
   subgraph nova01
-    style nova01 color:#ff0000,fill:#99cc66
-    H1(vm) --> N1(br-ex) --> P1(eth0)
-    H2(vm) --> N1
-    H3(vm) --> N1
-    C1(nova-computer) --- X1(libvirtd)
+    style nova01 color:#f0f000,fill:#99aaee
+    H1[(vm)] & H2[(vm)] & H3[(vm)] --> N1((br-ex)) --> P1(eth0)
+    C1(nova-computer) --- X1([libvirtd])
   end
   subgraph nova02
-    style nova02 color:#ff0000,fill:#99cc66
-    C2(nova-computer) --- X2(libvirtd)
-    H4(vm) --> N2(br-ex) --> P2(eth0)
-    H5(vm) --> N2
-    H6(vm) --> N2
+    style nova02 color:#f0f000,fill:#99aaee
+    C2(nova-computer) --- X2([libvirtd])
+    H4[(vm)] & H5[(vm)] & H6[(vm)] --> N2((br-ex)) --> P2(eth0)
   end
   subgraph openstack
-    style openstack color:#ff0000,fill:#11aaff
-    PP(管理节点)
+    style openstack color:#f0f000,fill:#99aaee
+    PP{管理节点}
   end
-  PP --> C1
-  PP --> C2
+  PP --> C1 & C2
 end
+classDef VM color:#ffff00,fill:#aaee66
+class H1,H2,H3,H4,H5,H6 VM
 ```
 
 ## openstack初始化

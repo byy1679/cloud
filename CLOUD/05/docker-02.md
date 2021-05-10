@@ -207,21 +207,16 @@ docker  run  -itd  -v 宿主机对象:容器内对象  镜像名称:标签
 ```mermaid
 graph LR
   subgraph docker-0001
-    style docker-0001 color:#ffcccc,fill:#7777ff
+    style docker-0001 fill:#ffffc0,color:#ff00ff
       subgraph 容器1
       style 容器1 color:#00ff00,fill:#88aaff
-        APP1(Nginx)
-        NET1{{共享网络}}
+        APP1[(Nginx)];NET1{{共享网络}}
       end
       subgraph 容器2
       style 容器2 color:#00ff00,fill:#88aaff
-        APP2(PHP)
+        APP2[(PHP)]
       end
-    APP1 --> NET1
-    APP2 --> NET1
-  L((共享存储卷))
-  APP1 -.-> L
-  APP2 -.-> L
+    APP1 & APP2 --> NET1 & L((共享存储卷))
   end
 U((用户)) --> APP1
 ```
@@ -279,12 +274,8 @@ php_host: 	f705f89b45f9
 
 ```mermaid
 graph TB
-  H1(容器服务器<br>docker-0001)
-  H2(容器服务器<br>docker-0002)
-  I{{镜像仓库}}
+  H1[(容器服务器<br>docker-0001)] & H2[(容器服务器<br>docker-0002)] --> I{{镜像仓库}}
   style I fill:#77ff77
-  H1 --> I
-  H2 --> I
 ```
 
 ###### 私有仓库配置

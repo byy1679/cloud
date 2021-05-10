@@ -72,9 +72,7 @@ graph TB
   subgraph <font color=#ff0000>真机</font>
       subgraph linux
         style linux color:#ff0000,fill:#11aaff
-        H1(虚拟机1) --> B{{虚拟网桥 <font color=#ff0000>vbr</font>}} --> E[eth0]
-        H2(虚拟机2) --> B
-        H3(虚拟机3) --> B
+        H1[(虚拟机)] & H2[(虚拟机)] & H3[(虚拟机)] --> B{{虚拟网桥 <font color=#ff0000>vbr</font>}} --> E([eth0])
       end
       E --> W(外部网络)
   end
