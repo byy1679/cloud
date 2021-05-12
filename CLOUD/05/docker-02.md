@@ -100,8 +100,8 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 deb37734e526        myos:php-fpm        "/usr/sbin/php-fpm -…"   17 seconds ago      Up 15 seconds       
 [root@docker-0001 ~]# docker exec -it deb37734e526 /bin/bash
 [root@deb37734e526 ~]# ss -ltun
-Netid  State      Recv-Q        Send-Q          Local Address:Port               Peer Address:Port              
-tcp    LISTEN     0             128             127.0.0.1:9000                   *:*                  
+Netid  State      Recv-Q        Send-Q          Local Address:Port         Peer Address:Port 
+tcp    LISTEN     0             128             127.0.0.1:9000             *:*
 [root@deb37734e526 ~]# 
 ```
 
