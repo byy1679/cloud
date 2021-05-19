@@ -219,9 +219,9 @@ http.cors.allow-headers : X-Requested-With,X-Auth-Token,Content-Type,Content-Len
 
 ```shell
 # 删除一条
-[root@es-0001 ~]# curl -XDELETE -H "Content-Type: application/json" http://es-0001:9200/tedu/teacher/1
+[root@es-0001 ~]# curl -XDELETE http://es-0001:9200/tedu/teacher/1
 # 删除索引
-[root@es-0001 ~]# curl -XDELETE -H "Content-Type: application/json" http://es-0001:9200/tedu
+[root@es-0001 ~]# curl -XDELETE http://es-0001:9200/tedu
 ```
 
 #### kibana安装
