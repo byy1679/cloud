@@ -69,7 +69,7 @@ output{
 
 ###### 插件与调试格式
 
-使用json格式字符串测试  {"a":"1", "b":"2","c":"3"}
+使用json格式字符串测试  {"a":"1", "b":"2", "c":"3"}
 
 ```shell
 [root@logstash ~]# vim /etc/logstash/conf.d/my.conf
