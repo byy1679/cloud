@@ -82,6 +82,35 @@ graph TB
 
 ###### 虚拟机硬盘磁盘文件
 
+###### COW图例
+
+```mermaid
+flowchart LR
+U2((用户)) -..->|读操作| X2
+U2((用户)) -..->|读修改过的数据| X3
+U1((用户)) --->|写操作| X3
+subgraph D1[原始盘]
+  X0([数据块])
+  X1([数据块])
+end
+subgraph D2[前端盘]
+  X2([如果数据块不存在])
+  X3([数据块副本])
+end
+X1 --->|写时拷贝副本| X3
+X2 -.->|读取原始盘数据| X0
+classDef mydisk fill:#ffffc0,color:#ff00ff
+class D1,D2 mydisk
+classDef X2 fill:#ccf,stroke:#f66,stroke-width:2px,stroke-dasharray: 10, 5
+class X2 X2
+classDef mydata fill:#0000ff,color:#ffff00
+class X0,X1 mydata
+classDef X3 fill:#ccffbb,color:#000000
+class X3 X3
+classDef U1 fill:#ffffff,color:#000000,stroke:#555555,stroke-width:4px;
+class U1,U2 U1
+```
+
 上传 cirros.qcow2 到虚拟机
 通过 qemu-img 创建虚拟机磁盘
 命令格式: qemu-img  子命令  子命令参数  虚拟机磁盘文件  大小
