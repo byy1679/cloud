@@ -253,6 +253,28 @@ output{
    启动服务
 
 ```shell
+[root@logstash ~]# cat /etc/logstash/conf.d/my.conf 
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter{
+  if [fields][my_type] == "apache" {
+  grok {
+    match => { "message" => "%{HTTPD_COMBINEDLOG}" }
+  }}
+}
+
+output{
+  #stdout{ codec => "rubydebug" }
+  if [fields][my_type] == "apache" {
+  elasticsearch {
+    hosts => ["es-0004:9200", "es-0005:9200"]
+    index => "weblog-%{+YYYY.MM.dd}"
+  }}
+}
 [root@logstash ~]# /usr/share/logstash/bin/logstash
 ```
 6、配置 kibana
