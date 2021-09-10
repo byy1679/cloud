@@ -244,7 +244,3 @@ namenode:  http://hadoop1:50070
 secondarynamenode:  http://hadoop1:50090
 
 resourcemanager:  http://hadoop1:8088/cluster
-
-datanode:  http://node-0001:50075
-
-nodemanager:  http://node-0001:8042/node
