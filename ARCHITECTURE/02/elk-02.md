@@ -228,10 +228,10 @@ output{
 ```shell
 [root@kibana ~]# systemctl stop kibana
 ```
-2、清空 elasticsearch 中所有数据 
+2、清空 elasticsearch 中日志数据 
 
 ```shell
-[root@kibana ~]# curl -XDELETE http://es-0001:9200/*
+[root@kibana ~]# curl -XDELETE http://es-0001:9200/weblog-*
 ```
 
 访问 web 页面，浏览器打开 head 插件，通过 web 页面浏览验证
