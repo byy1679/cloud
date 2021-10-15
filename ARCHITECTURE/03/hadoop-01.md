@@ -27,7 +27,7 @@
 [root@hadoop1 ~]# vim /etc/hosts
 192.168.1.50	hadoop1
 [root@hadoop1 ~]# vim /usr/local/hadoop/etc/hadoop/hadoop-env.sh
-25:  export JAVA_HOME="java-1.8.0-openjdk安装路径"
+25:  export JAVA_HOME="/usr"
 33:  export HADOOP_CONF_DIR="/usr/local/hadoop/etc/hadoop"
 [root@hadoop1 ~]# /usr/local/hadoop/bin/hadoop version
 ```
